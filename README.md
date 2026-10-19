@@ -23,6 +23,7 @@
 | [06 防止无序扩张的规则](docs/06-prevention.md) | 可以直接放进 AGENTS.md / CLAUDE.md 的约束 |
 | [07 定期体检](docs/07-checkup.md) | 只读体检脚本的用法和建议频率 |
 | [08 踩过的坑](docs/08-pitfalls.md) | 每一条都来自真实翻车 |
+| [09 AI 编程工具的长期卫生](docs/09-ai-coding-tools.md) | 对话记录、托管 worktree、超长对话的预防：自动归档、压缩后提醒交接、摘要防串台 |
 
 脚本与模板：
 
