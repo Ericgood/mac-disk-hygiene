@@ -55,3 +55,38 @@ launchctl load ~/Library/LaunchAgents/local.disk-report.plist
 ```
 
 **不要**把「自动删除」放进定时任务。清理永远需要本人看过报告再确认。
+
+## 增长监控：清完以后盯住「谁又在涨」
+
+一次性清理之后，空间往往几天就被吃回去（实测：一天内某 AI 桌面 App 新生成 11 GB 虚拟机镜像、Xcode 构建 +3 GB、手机安装增量缓存重新长出 2 GB、swap 涨到 10 GB）。[`scripts/growth_watch.py`](../scripts/growth_watch.py) 用来持续盯：
+
+- 每次运行量一遍允许清单里的目录（主目录各项、`~/Library/Application Support` 非 Apple 项、`~/Library/Caches`、Xcode、AI 工具目录等），存快照；
+- 和上一次、和约 24 小时前对比，写出 Markdown 报告：哪些目录涨了多少、可用空间变化里有多少是「未统计区域」（App 容器、系统、swap）；
+- 可用空间低于 20 GB、两次之间少了 5 GB 以上、或某目录一天涨超过 3 GB 时，弹 macOS 通知。
+
+它**只读**，只写自己的数据目录（默认 `~/.local/state/growth-watch`，可用 `GROWTH_WATCH_DIR` 改），并且**刻意不扫**需要额外隐私授权的位置（其他 App 的容器、桌面、文稿、下载、邮件、信息、iPhone 备份），所以放在后台跑也不会反复弹授权框。
+
+每 2 小时运行一次（launchd）：
+
+```xml
+<!-- ~/Library/LaunchAgents/local.disk-growth-watch.plist -->
+<plist version="1.0"><dict>
+  <key>Label</key><string>local.disk-growth-watch</string>
+  <key>ProgramArguments</key><array>
+    <string>/usr/bin/python3</string>
+    <string>/path/to/mac-disk-hygiene/scripts/growth_watch.py</string>
+  </array>
+  <key>StartInterval</key><integer>7200</integer>
+  <key>LowPriorityIO</key><true/>
+  <key>Nice</key><integer>19</integer>
+  <key>StandardOutPath</key><string>/dev/null</string>
+</dict></plist>
+```
+
+```bash
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/local.disk-growth-watch.plist
+launchctl kickstart gui/$(id -u)/local.disk-growth-watch      # 立即跑一次验证
+launchctl bootout gui/$(id -u)/local.disk-growth-watch        # 不想要了就卸载
+```
+
+系统自带的 `/usr/bin/python3` 是 3.9，脚本已兼容。

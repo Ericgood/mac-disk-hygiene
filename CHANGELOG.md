@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-21 — 增长监控
+
+- 新增 `scripts/growth_watch.py`：只读增长监控，快照对比 + 超阈值 macOS 通知，避开隐私受保护目录；07 补充 launchd 用法；08 新增「缓存会再生」一条。
+
 ## 2026-10-20 — AI 编程工具卫生
 
 - 新增 [09 AI 编程工具的长期卫生](docs/09-ai-coding-tools.md)：Claude Code / Codex 对话记录与托管 worktree 的保留机制、第 2 次压缩后自动提醒写交接的钩子示例、启动摘要跨项目串台的坑。
