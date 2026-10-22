@@ -160,7 +160,11 @@ def section(lines: list[str], title: str, old: dict, new: dict) -> tuple[list, f
     lines.append(f"\n## {title}（对比 {old['time']}）\n")
     free_delta = gb(new["free_kb"] - old["free_kb"])
     rows = growth(old, new)
-    measured = gb(sum(d for d, _, _ in rows))
+    paths = {p for _, p, _ in rows}
+    # count each change once: skip entries whose ancestor is also measured
+    top_level = [r for r in rows
+                 if not any(r[1].startswith(q + "/") for q in paths if q != r[1])]
+    measured = gb(sum(d for d, _, _ in top_level))
     lines.append(f"- 可用空间变化：{free_delta:+.2f} GB")
     lines.append(f"- 已统计目录合计变化：{measured:+.2f} GB")
     lines.append(f"- 未统计区域（App 容器、系统、swap 等）大约：{-free_delta - measured:+.2f} GB\n")
