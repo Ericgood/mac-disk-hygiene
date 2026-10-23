@@ -60,7 +60,8 @@ SINGLE = [
     HOME / "Library" / "HarmonyOS",
     HOME / "Library" / "Android",
     HOME / "Library" / "pnpm",
-    HOME / "Library" / "Containers" / "com.apple.CoreDevice.CoreDeviceService",
+    # Note: other apps' containers (e.g. CoreDevice install deltas) are privacy-protected;
+    # a background job cannot measure them, so they are left out to avoid fake growth spikes.
 ]
 
 
