@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-28 — 进程检查自匹配
+
+- 08 第 15 条补充：`pgrep -f` 会匹配到执行检查的 shell 自己。
+
 ## 2026-10-27 — Xcode 构建目录与占用检查
 
 - 02：用 `info.plist` 的 `WorkspacePath` 判断 DerivedData 是否已无人使用。
