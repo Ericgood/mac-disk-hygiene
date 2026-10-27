@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-27 — Xcode 构建目录与占用检查
+
+- 02：用 `info.plist` 的 `WorkspacePath` 判断 DerivedData 是否已无人使用。
+- 08 新增两条：`lsof +D` 会把检查者自己算成占用；每次构建换新 `-derivedDataPath` 导致旧目录堆积。
+
 ## 2026-10-21 — 增长监控
 
 - 新增 `scripts/growth_watch.py`：只读增长监控，快照对比 + 超阈值 macOS 通知，避开隐私受保护目录；07 补充 launchd 用法；08 新增「缓存会再生」一条。

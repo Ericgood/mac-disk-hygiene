@@ -69,6 +69,8 @@ find <项目> -not -path '*/node_modules/*' -not -path '*/.git/*' -type f -newer
 | `Archives` | 先问 | 是发版存档 |
 | 模拟器运行时 | **不要动** | 本地编译可能依赖，见 [08](08-pitfalls.md) |
 
+判断 `DerivedData/<工程名>-<哈希>` 是不是没人用了：读它的 `info.plist` 里的 `WorkspacePath`（`/usr/libexec/PlistBuddy -c 'Print :WorkspacePath' info.plist`）。对应工程已经不存在，或目录很久没改动，就可以删；Xcode 正开着的工程对应的那个先别动。工程目录里自定义的 `build-*` 构建目录见 [08 第 16 条](08-pitfalls.md)。
+
 ## 3. 旧安装包：每个目录只留最新 3 个
 
 `dist/`、`release/` 之类放安装包的目录，按修改时间只保留最新 3 个（以及对应的 mapping / 符号文件）：
